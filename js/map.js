@@ -512,34 +512,34 @@ function getItemIcon(item) {
 }
 // Function to get the promotion image URL based on the item name
 function getPromotionImageUrl_MARKER(item) {
-  // CORS proxy to bypass mixed content issues
-  const corsProxy = "https://cors-anywhere.herokuapp.com/";
+  // CORS proxy to bypass mixed content issues using AllOrigins
+  const corsProxy = "https://api.allorigins.win/get?url=";
 
   // Define promotion image URLs
   const promotionImages = {
     "promotion 1":
-      corsProxy + "http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_1.jpg",
+      corsProxy + encodeURIComponent("http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_1.jpg"),
     "promotion 2":
-      corsProxy + "http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_2.jpg",
+      corsProxy + encodeURIComponent("http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_2.jpg"),
     "promotion 3":
-      corsProxy + "http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_3.jpg",
+      corsProxy + encodeURIComponent("http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_3.jpg"),
     "promotion 4":
-      corsProxy + "http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_4.jpg",
+      corsProxy + encodeURIComponent("http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_4.jpg"),
     "promotion opening 1":
-      corsProxy + "http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_opening_1.jpg",
+      corsProxy + encodeURIComponent("http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_opening_1.jpg"),
     "promotion opening 2":
-      corsProxy + "http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_opening_2.jpg",
+      corsProxy + encodeURIComponent("http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_opening_2.jpg"),
     "promotion opening 3":
-      corsProxy + "http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_opening_3.jpg",
+      corsProxy + encodeURIComponent("http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_opening_3.jpg"),
     "promotion opening 4":
-      corsProxy + "http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_opening_4.jpg",
+      corsProxy + encodeURIComponent("http://180.178.127.119:8282/map_ptt/pictures/promotion/promotion_opening_4.jpg"),
     // Add more promotion images as needed
   };
 
   // Return the image URL or a default one if no match is found
   return (
     promotionImages[item] ||
-    corsProxy + "http://180.178.127.119:8282/map_ptt/pictures/default.png"
+    corsProxy + encodeURIComponent("http://180.178.127.119:8282/map_ptt/pictures/default.png")
   );
 }
 
