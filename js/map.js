@@ -81,7 +81,7 @@ function setMapToCurrentLocation() {
 }
 
 // Base CORS proxy URL
-const corsProxy = 'https://corsproxy.io/?'; 
+const corsProxy = 'https://cors-anywhere.herokuapp.com/';
 
 // Fetch data from JSON file via CORS proxy
 fetch(corsProxy + "http://180.178.127.119:8282/map_ptt/data/markers.json")
