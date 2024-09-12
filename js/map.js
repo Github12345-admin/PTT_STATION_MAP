@@ -80,21 +80,27 @@ function setMapToCurrentLocation() {
     });
 }
 
-// Base CORS proxy URL
-const corsProxy = 'https://api.allorigins.win/';
+// Base CORS proxy URL using AllOrigins
+const corsProxy = 'https://api.allorigins.win/get?url=';
+
+// Helper function to encode the URL
+function encodeUrl(url) {
+  return encodeURIComponent(url);
+}
 
 // Fetch data from JSON file via CORS proxy
-fetch(corsProxy + "http://180.178.127.119:8282/map_ptt/data/markers.json")
-  .then((response) => response.json())
-  .then((data) => {
-    var stations = data.STATION;
+fetch(corsProxy + encodeUrl("http://180.178.127.119:8282/map_ptt/data/markers.json"))
+  .then(response => response.json())
+  .then(data => {
+    var stations = JSON.parse(data.contents).STATION; // Parse the contents from the AllOrigins response
     populateIconContainersAndDropdown(stations);
 
-    fetch(corsProxy + "http://180.178.127.119:8282/map_ptt/data/promotions.json")
-      .then((response) => response.json())
-      .then((promotionData) => {
-        stations.forEach((station) => {
-          const stationPromotions = promotionData.PROMOTIONS.find((promo) => promo.station_id == station.id);
+    fetch(corsProxy + encodeUrl("http://180.178.127.119:8282/map_ptt/data/promotions.json"))
+      .then(response => response.json())
+      .then(promotionData => {
+        var promotions = JSON.parse(promotionData.contents).PROMOTIONS;
+        stations.forEach(station => {
+          const stationPromotions = promotions.find(promo => promo.station_id == station.id);
           station.promotions = stationPromotions ? stationPromotions.promotions : [];
 
           // Fetch additional resources like icons and pictures with CORS proxy
@@ -116,10 +122,11 @@ fetch(corsProxy + "http://180.178.127.119:8282/map_ptt/data/markers.json")
           var marker = L.marker([station.latitude, station.longitude], { icon: customIcon });
 
           // Fetch image URL via proxy
-          var imageUrl = `${corsProxy}http://180.178.127.119:8282//map_ptt/pictures/${station.picture}`;
+          var imageUrl = `${corsProxy}${encodeUrl(`http://180.178.127.119:8282/map_ptt/pictures/${station.picture}`)}`;
 
           marker.on("click", function () {
-            // Similar code logic to handle map zoom, modal, and Bing Maps routing
+            // Handle map zoom, modal, and Bing Maps routing
+            showMarkerModal(station, imageUrl); // Pass image URL to your modal
           });
 
           markers.addLayer(marker);
@@ -130,9 +137,11 @@ fetch(corsProxy + "http://180.178.127.119:8282/map_ptt/data/markers.json")
         map.fitBounds(markers.getBounds());
         setMapToCurrentLocation();
       })
-      .catch((error) => console.error("Error fetching promotion data:", error));
+      .catch(error => console.error("Error fetching promotion data:", error));
   })
-  .catch((error) => console.error("Error fetching station data:", error));
+  .catch(error => console.error("Error fetching station data:", error));
+
+// Rest of your code for handling modal, location, and other logic...
 
 
 // Function to get current location
